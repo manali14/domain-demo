@@ -10,8 +10,17 @@ class UtilController {
 
     def index() { }
 
+    def manyToOne(){
+        Nose nose=new Nose()
+        Face face1= new Face(nose: nose)
+        Face face2=new Face(nose: nose)
+        face1.save()
+        face2.save()
+        render "done"
+    }
+
     def oneToOne() {
-        new Face(nose: new Nose()).save()
+        Face face=new Face(nose: new Nose()).save()
 //        new Face(nose: Nose.get(1)).save(failOnError: true)
         render "done"
     }
@@ -30,6 +39,11 @@ class UtilController {
         render "done"
     }
 
+    def deleteOneToMany(){
+        Author.get(1).delete(flush: true);
+        render "done"
+    }
+
     def manyToManyWithOwner() {
         new Author(name: "Stephen King")
                 .addToBooks(new Book(title: "The Stand"))
@@ -42,13 +56,13 @@ class UtilController {
         new Book(title: "Groovy in Action")
                 .addToAuthors(new Author(name: "Dierk Koenig"))
                 .addToAuthors(new Author(name: "Guillaume Laforge"))
-                .save()
+                .save(flush: true)
         render "done"
     }
 
     def testConstraint() {
-        Employee employee = new Employee(firstName: "Puneet", lastName: "Kaur", email: "puneet@intelligrape.com",
-                password: "puneet")
+        Employee employee = new Employee(firstName: "Diksha", lastName: "Ahuja", email: "diksha.ahuja@tothenew.com",
+                password: "diksha")
         employee.validate()
         employee.errors.allErrors.each {
             println "Errors" + it
@@ -57,9 +71,10 @@ class UtilController {
     }
 
     def saveFlow() {
-        Employee employee = new Employee(firstName: "Puneet", lastName: "Kaur", email: "puneet@intelligrape.com",
-                password: "puneet")
-        render employee.save(flush: true)
+        Employee employee = new Employee(firstName: "Diksha", lastName: "Ahuja", email: "diksha.ahuja@tothenew.com",
+                password: "diksha")
+        employee.save(flush: true)
+        render employee
 
     }
 
